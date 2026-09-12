@@ -57,12 +57,14 @@ jobs:
           aws --version
 
       # Étape 6b : Configure kubectl pour EKS
+      # Pas de --role-arn : brahim accède au cluster directement via un
+      # Access Entry EKS (eks-cluster-role est le rôle de service du
+      # cluster, il ne peut pas être assumé par un utilisateur IAM).
       - name: Configure kubectl
         run: |
           aws eks update-kubeconfig \
           --region us-east-1 \
-          --name demo-cluster \
-          --role-arn arn:aws:iam::354328790859:role/eks-cluster-role
+          --name demo-cluster
 
       # Étape 6c : Vérifie que l'authentification au cluster fonctionne
       # avant de lancer le déploiement Helm (échec rapide, message plus clair)
