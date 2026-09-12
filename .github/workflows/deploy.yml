@@ -45,7 +45,10 @@ jobs:
       # Étape 6 : Configure kubectl pour EKS
       - name: Configure kubectl
         run: |
-          aws eks update-kubeconfig --region us-east-1 --name demo-cluster
+          aws eks update-kubeconfig \
+          --region us-east-1 \
+          --name demo-cluster \
+          --role-arn arn:aws:iam::354328790859:role/eks-cluster-role
 
       # Étape 7 : Installe Helm
       - name: Install Helm
