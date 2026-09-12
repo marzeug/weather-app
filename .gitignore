@@ -1,0 +1,13 @@
+# Java
+target/
+*.jar
+*.class
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# Variables sensibles
+application.properties

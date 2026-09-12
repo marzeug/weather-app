@@ -1,0 +1,13 @@
+# Image Docker à déployer
+image:
+  repository: 354328790859.dkr.ecr.us-east-1.amazonaws.com/demo-weather-app
+  tag: "1.0"
+
+# Nombre de réplicas (instances de l'app)
+replicaCount: 1
+
+# Configuration du service
+service:
+  type: LoadBalancer  # expose l'app sur internet
+  port: 80            # port externe
+  targetPort: 8086    # port interne de l'app

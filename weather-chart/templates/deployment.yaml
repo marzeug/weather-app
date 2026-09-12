@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Nom du déploiement
+  name: weather-app
+spec:
+  # Nombre d'instances de l'app
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: weather-app
+  template:
+    metadata:
+      labels:
+        app: weather-app
+    spec:
+      containers:
+        - name: weather-app
+          # Image Docker depuis ECR
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 8086
+          # Variables d'environnement
+          env:
+            - name: SERVER_PORT
+              value: "8086"
