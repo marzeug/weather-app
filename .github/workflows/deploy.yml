@@ -45,13 +45,29 @@ jobs:
           docker push \
           354328790859.dkr.ecr.us-east-1.amazonaws.com/demo-weather-app:${{ github.sha }}
 
-      # Étape 6 : Configure kubectl pour EKS
+      # Étape 6a : Met à jour AWS CLI vers la dernière version
+      # (une version trop ancienne génère un kubeconfig avec une API
+      # d'authentification obsolète, incompatible avec les kubectl/helm récents,
+      # ce qui provoque "the server has asked for the client to provide credentials")
+      - name: Update AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip -q awscliv2.zip
+          sudo ./aws/install --update
+          aws --version
+
+      # Étape 6b : Configure kubectl pour EKS
       - name: Configure kubectl
         run: |
           aws eks update-kubeconfig \
           --region us-east-1 \
           --name demo-cluster \
           --role-arn arn:aws:iam::354328790859:role/eks-cluster-role
+
+      # Étape 6c : Vérifie que l'authentification au cluster fonctionne
+      # avant de lancer le déploiement Helm (échec rapide, message plus clair)
+      - name: Verify cluster access
+        run: kubectl get nodes
 
       # Étape 7 : Installe Helm
       - name: Install Helm
